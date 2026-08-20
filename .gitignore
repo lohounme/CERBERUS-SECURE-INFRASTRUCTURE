@@ -1,0 +1,24 @@
+# ==============================================================================
+# CERBERUS DevSecOps — Git Ignore Configuration
+# ==============================================================================
+
+# Local Terraform Working Directory & Binaries
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local Environment & Secrets
+.env
+*.env
+*.pem
+*.key
+
+# OS & Editor Files
+.DS_Store
+*.log

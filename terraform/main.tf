@@ -36,7 +36,7 @@ resource "azurerm_kubernetes_cluster" "cerberus_aks" {
   dns_prefix          = "cerberus-k8s"
 
   # CKV_AZURE_171: Mises à jour automatiques des patchs K8s
-  automatic_channel_upgrade = "patch"
+  automatic_upgrade_channel = "patch"
 
   # CKV_AZURE_116: Activer Azure Policy Add-on
   azure_policy_enabled = true

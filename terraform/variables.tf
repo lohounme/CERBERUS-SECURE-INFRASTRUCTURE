@@ -4,8 +4,8 @@
 
 variable "location" {
   type        = string
-  default     = "francecentral"
-  description = "Région Azure pour le déploiement des ressources CERBERUS (ex: westeurope, francecentral)"
+  default     = "northeurope"
+  description = "Région Azure pour le déploiement des ressources CERBERUS (northeurope a un quota vCPU étudiant actif)"
 }
 
 variable "resource_group_name" {
@@ -34,6 +34,6 @@ variable "node_count" {
 
 variable "node_vm_size" {
   type        = string
-  default     = "Standard_D2as_v4" # VM v4 autorisée sur francecentral pour Azure for Students
+  default     = "Standard_B2s" # Économique : 2 vCPUs (Quota de 4 vCPUs disponible sur northeurope)
   description = "Taille de la machine virtuelle pour le worker node K8s"
 }

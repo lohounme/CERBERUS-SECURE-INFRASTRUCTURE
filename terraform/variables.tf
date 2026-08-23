@@ -10,7 +10,7 @@ variable "location" {
 
 variable "resource_group_name" {
   type        = string
-  default     = "rg-cerberus-devsecops"
+  default     = "rg-cerberus-aks-devsecops"
   description = "Nom du groupe de ressources Azure"
 }
 

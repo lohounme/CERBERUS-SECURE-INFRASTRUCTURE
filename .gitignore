@@ -19,6 +19,8 @@ override.tf.json
 *.pem
 *.key
 
-# OS & Editor Files
+# OS, Node & Editor Files
+node_modules/
+src/node_modules/
 .DS_Store
 *.log

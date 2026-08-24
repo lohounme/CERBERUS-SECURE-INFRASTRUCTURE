@@ -32,9 +32,8 @@ spec:
 
       containers:
         - name: cerberus-api
-          image: node:20-alpine
-          command: ["node", "-e", "const http = require('http'); http.createServer((req, res) => { if (req.url === '/health') { res.writeHead(200); res.end('OK'); } else { res.writeHead(404); res.end(); } }).listen(3000);"]
-          imagePullPolicy: IfNotPresent
+          image: cerberus-api:v1.0.0
+          imagePullPolicy: Never
           ports:
             - containerPort: 3000
               name: http

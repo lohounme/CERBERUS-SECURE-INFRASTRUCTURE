@@ -1,0 +1,31 @@
+# ==============================================================================
+# CERBERUS DevSecOps — Zero-Trust Pod Micro-Segmentation Network Policy
+# ==============================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cerberus-api-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cerberus-api
+  policyTypes:
+    - Ingress
+    - Egress
+
+  # 🛡️ TRAFIC ENTRANT (Ingress) : Autorise UNIQUEMENT le port 3000 HTTP
+  ingress:
+    - from:
+        - podSelector: {} # Autorise les requêtes internes du namespace
+      ports:
+        - protocol: TCP
+          port: 3000
+
+  # 🛡️ TRAFIC SORTANT (Egress) : Restreint aux requêtes DNS K8s et requêtes autorisées
+  egress:
+    - to:
+        - podSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53 # Port DNS Kubernetes (CoreDNS)

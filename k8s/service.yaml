@@ -1,0 +1,20 @@
+# ==============================================================================
+# CERBERUS DevSecOps — Internal Service Load Balancer
+# ==============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: cerberus-api-service
+  namespace: default
+  labels:
+    app: cerberus-api
+    tier: backend
+spec:
+  type: ClusterIP # IP interne au cluster (Bonne pratique Zero-Trust)
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: cerberus-api

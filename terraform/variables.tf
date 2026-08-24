@@ -34,6 +34,6 @@ variable "node_count" {
 
 variable "node_vm_size" {
   type        = string
-  default     = "Standard_D2s_v3" # VM v3 avec quota actif de 4 vCPUs sur spaincentral pour Azure for Students
+  default     = "standard_d2as_v7" # VM v7 explicitement autorisée pour AKS sur spaincentral
   description = "Taille de la machine virtuelle pour le worker node K8s"
 }

@@ -1,0 +1,74 @@
+# ==============================================================================
+# CERBERUS DevSecOps — Hardened Microservice API Kubernetes Deployment
+# ==============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cerberus-api
+  namespace: default
+  labels:
+    app: cerberus-api
+    tier: backend
+    security-policy: non-root-enforced
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cerberus-api
+  template:
+    metadata:
+      labels:
+        app: cerberus-api
+        tier: backend
+    spec:
+      # 🛡️ SECURITE POD-LEVEL (Zero-Trust)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: cerberus-api
+          image: node:20-alpine
+          command: ["node", "-e", "const http = require('http'); http.createServer((req, res) => { if (req.url === '/health') { res.writeHead(200); res.end('OK'); } else { res.writeHead(404); res.end(); } }).listen(3000);"]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+
+
+          # 🛡️ SECURITE CONTAINER-LEVEL (Hardening CIS Benchmark)
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - ALL
+
+          # Limites de ressources (Empêche les attaques DoS / Épuisement de mémoire)
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+
+          # Health Checks K8s (Savoir si le Pod est vivant et prêt)
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5

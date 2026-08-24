@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Syft SBOM CLI
-        uses: anchore/scan-action/download-syft@v3
+        uses: anchore/sbom-action/download-syft@v0.16.0
 
       - name: Install Cosign CLI
         uses: sigstore/cosign-installer@v3.5.0

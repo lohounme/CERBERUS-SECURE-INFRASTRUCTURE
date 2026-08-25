@@ -3,19 +3,19 @@
 **Target Organization:** NEXUS CORP  
 **Audit Scope:** Infrastructure as Code (IaC), Kubernetes Cluster Hardening, Supply Chain Attestation & DAST Runtime  
 **Lead DevSecOps Engineer:** Andoche Lohounme  
-**Audit Date:** August 24, 2026  
-**Overall Security Grade:** **`A+ (100% Compliance - Zero Critical Vulnerabilities)`**
+**Audit Date:** August 25, 2026  
+**Overall Security Status:** **`Conforme au référentiel CIS Kubernetes Benchmark & OWASP ZAP (Aucune vulnérabilité critique identifiée dans le périmètre testé)`**
 
 ---
 
 ## 🎯 1. Executive Summary
 
-An end-to-end multi-layer DevSecOps defense architecture was implemented and audited for **NEXUS CORP**. All critical findings from the initial external audit have been systematically remediated across 4 primary defense layers:
+An end-to-end multi-layer DevSecOps defense architecture was implemented and audited for **NEXUS CORP**. All primary findings from the initial external audit have been systematically remediated across 4 primary defense layers:
 
 1. **IaC Layer** : Automated static analysis of Terraform (`azurerm v4`) infrastructure with `checkov`.
 2. **Admission Control Layer** : Kyverno Policy Engine actively enforcing non-root container execution (`disallow-root-user`).
 3. **Supply Chain Layer** : Automated Software Bill of Materials (SBOM) generated via `syft` and cryptographically signed via `cosign` (Sigstore).
-4. **Runtime Layer** : Dynamic Application Security Testing (DAST) on live microservice API with **`100% (9/9 Passed)`** compliance.
+4. **Runtime Layer** : Dynamic Application Security Testing (DAST) baseline scan with OWASP ZAP against the live microservice API (Aucune alerte de gravité Élevée ou Critique identifiée sur les endpoints testés).
 
 ---
 
@@ -24,7 +24,7 @@ An end-to-end multi-layer DevSecOps defense architecture was implemented and aud
 - **Terraform Configuration** : Provisioning of Azure AKS, ACR, and RBAC bindings.
 - **Static Analyzer** : `checkov --config-file .checkov.yaml`.
 - **Audit Findings** :
-  - High/Critical Severity IaC Misconfigurations: **`0`**
+  - High/Critical Severity IaC Misconfigurations: **`0 identifiée dans le périmètre testé`**
   - Enforced Managed Identity & Private Endpoints.
   - Upgrade to `azurerm ~> 4.0` provider syntax completed.
 
@@ -60,14 +60,16 @@ An end-to-end multi-layer DevSecOps defense architecture was implemented and aud
 
 ---
 
-## ⚡ 5. Dynamic Application Security Testing (DAST)
+## ⚡ 5. Dynamic Application Security Testing (DAST - OWASP ZAP Baseline)
 
 - **Target** : `http://localhost:8080` (CERBERUS Hardened REST API Microservice).
-- **Compliance Score** : **`100% (9/9 Passed)`**.
-- **Audit Highlights** :
+- **Scanner Tool** : **OWASP ZAP (Zed Attack Proxy)** / DAST Security Suite.
+- **Audit Status** : **Aucune alerte de gravité Élevée ou Critique identifiée dans le périmètre testé.**
+- **Key Security Attributes Verified** :
   - `X-Powered-By` server header hidden (Zero fingerprint leakage).
   - Enforced Helmet security headers (`X-Frame-Options: SAMEORIGIN`, `nosniff`, `noopen`, `x-dns-prefetch-control`).
   - Stack-trace-free 404 error handling.
+  - Resilience against standard active/passive injection probes.
 
 ---
 
@@ -82,6 +84,6 @@ An end-to-end multi-layer DevSecOps defense architecture was implemented and aud
 
 ---
 
-## 🏁 7. Conclusion & Production Sign-off
+## 🏁 7. Conclusion & Scope Limitations
 
-The **CERBERUS** architecture achieves full compliance with NIST SP 800-190 and CIS Kubernetes Benchmarks. The infrastructure is production-ready, fully automated via GitHub Actions (`.github/workflows/cerberus-pipeline.yml`), and verified zero-downtime resilient.
+The **CERBERUS** architecture demonstrates high security posture according to NIST SP 800-190 and CIS Kubernetes Benchmarks for the tested scope. Continuous automated verification is enforced via GitHub Actions (`.github/workflows/cerberus-pipeline.yml`).

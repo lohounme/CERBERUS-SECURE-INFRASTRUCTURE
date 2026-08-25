@@ -5,7 +5,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 🛡️ SÉCURITÉ 1 : En-têtes HTTP de sécurité via Helmet
-app.use(helmet());
+// Fix nikto DAST Finding: X-Content-Type-Options explicitly enforced
+app.use(helmet({
+  contentSecurityPolicy: false, // API REST, pas de HTML
+  noSniff: true,                // X-Content-Type-Options: nosniff (Fix nikto finding)
+  frameguard: { action: 'sameorigin' }, // X-Frame-Options: SAMEORIGIN
+  xssFilter: true,              // X-XSS-Protection
+  hsts: false,                  // Pas de HTTPS en local kind cluster
+}));
 
 // 🛡️ SÉCURITÉ 2 : Limiter la taille des payloads JSON (protection DoS)
 app.use(express.json({ limit: '10kb' }));

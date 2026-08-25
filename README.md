@@ -59,7 +59,7 @@
 - **Score** : **`100% Compliance (9/9 Passed)`**. Enforced Helmet security headers, hidden `X-Powered-By` server fingerprints, and stack-leak-free 404 error handling.
 
 ### 5. Threat Modeling (STRIDE)
-- Full architectural threat analysis matrix documented in [`threat-model/THREAT_MODEL.md`](file:///home/andochelohounme/CERBERUS-SECURE-INFRASTRUCTURE/threat-model/THREAT_MODEL.md).
+- Full architectural threat analysis matrix documented in [`threat-model/THREAT_MODEL.md`](threat-model/THREAT_MODEL.md).
 
 ---
 
@@ -103,11 +103,11 @@ cosign verify-blob --key cosign.pub --bundle docs/sbom.spdx.json.bundle docs/sbo
 # Forward Kubernetes service
 kubectl port-forward service/cerberus-api-service 8080:80
 
-# Execute DAST scan (In another terminal)
-python3 scripts/dast-scanner.py
+# Execute OWASP ZAP DAST scan
+docker run --rm --net=host -v $(pwd)/docs:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://localhost:8080 -r DAST_REPORT.html -m DAST_REPORT.md
 ```
 
 ---
 
 ## 📜 License
-This project is licensed under the MIT License — see the [LICENSE](file:///home/andochelohounme/CERBERUS-SECURE-INFRASTRUCTURE/LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
